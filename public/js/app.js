@@ -65854,10 +65854,12 @@ var App = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this);
     _this.state = {
-      dice: []
+      dice: [],
+      total: 0
     };
     _this.get1to6 = _this.get1to6.bind(_assertThisInitialized(_this));
-    _this.rerollDice = _this.rerollDice.bind(_assertThisInitialized(_this));
+    _this.rerollDie = _this.rerollDie.bind(_assertThisInitialized(_this));
+    _this.rerollAll = _this.rerollAll.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -65866,15 +65868,19 @@ var App = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var numberOfDice = this.get1to6();
       var dice = [];
+      var total = 0;
 
       for (var i = 0; i < numberOfDice; i++) {
+        var value = this.get1to6();
         dice.push({
-          value: this.get1to6()
+          value: value
         });
+        total = total + value;
       }
 
       this.setState({
-        dice: dice
+        dice: dice,
+        total: total
       });
     }
   }, {
@@ -65883,13 +65889,32 @@ var App = /*#__PURE__*/function (_Component) {
       return Math.floor(Math.random() * Math.floor(6)) + 1;
     }
   }, {
-    key: "rerollDice",
-    value: function rerollDice(key) {
+    key: "rerollDie",
+    value: function rerollDie(key) {
       var dice = this.state.dice;
+      var original = dice[key].value;
+      var newVal = this.get1to6();
+      var difference = newVal - original;
       dice[key] = {
-        value: this.get1to6()
+        value: newVal
       };
-      console.log(dice);
+      var newTotal = this.state.total + difference;
+      this.setState({
+        dice: dice,
+        total: newTotal
+      });
+    }
+  }, {
+    key: "rerollAll",
+    value: function rerollAll() {
+      var _this2 = this;
+
+      var dice = [];
+      this.state.dice.map(function (die, key) {
+        dice[key] = {
+          value: _this2.get1to6()
+        };
+      });
       this.setState({
         dice: dice
       });
@@ -65897,17 +65922,19 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var dice = this.state.dice.map(function (die, key) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Die_Die__WEBPACK_IMPORTED_MODULE_2__["default"], {
           key: key,
           index: key,
           value: die.value,
-          reroll: _this2.rerollDice
+          reroll: _this3.rerollDie
         });
       });
-      return dice;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, dice, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Total: ", this.state.total), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.rerollAll
+      }, "Reroll All"));
     }
   }]);
 
