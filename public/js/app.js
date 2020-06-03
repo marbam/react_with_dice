@@ -69383,7 +69383,7 @@ var App = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this = this;
 
-      var dice = this.props.dc.map(function (die, key) {
+      var dice = this.props.dice.map(function (die, key) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Die_Die__WEBPACK_IMPORTED_MODULE_2__["default"], {
           key: key,
           index: key,
@@ -69395,7 +69395,7 @@ var App = /*#__PURE__*/function (_Component) {
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: this.props.setupDice
-      }, "Setup Dice"), dice, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Total: ", this.props.tt), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, "Setup Dice"), dice, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Total: ", this.props.total), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: this.props.rerollAll
       }, "Reroll All"));
     }
@@ -69406,8 +69406,8 @@ var App = /*#__PURE__*/function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    dc: state.dc,
-    tt: state.tt
+    dice: state.dice,
+    total: state.total
   };
 };
 
@@ -69474,14 +69474,14 @@ function Die(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var initialState = {
-  dc: [{
+  dice: [{
     value: 1
   }, {
     value: 2
   }, {
     value: 3
   }],
-  tt: 6
+  total: 6
 };
 
 var reducer = function reducer() {
@@ -69502,30 +69502,30 @@ var reducer = function reducer() {
     }
 
     return {
-      dc: dice,
-      tt: total
+      dice: dice,
+      total: total
     };
   }
 
   if (action.type === "REROLL") {
-    var _dice = state.dc;
+    var _dice = state.dice;
     var original = _dice[action.index].value;
     var newVal = Math.floor(Math.random() * Math.floor(6)) + 1;
     var difference = newVal - original;
     _dice[action.index] = {
       value: newVal
     };
-    var newTotal = state.tt + difference;
+    var newTotal = state.total + difference;
     return {
-      dc: _dice,
-      tt: newTotal
+      dice: _dice,
+      total: newTotal
     };
   }
 
   if (action.type === "REROLLALL") {
     var _dice2 = [];
     var _total = 0;
-    state.dc.map(function (die, key) {
+    state.dice.map(function (die, key) {
       var value = Math.floor(Math.random() * Math.floor(6)) + 1;
       _dice2[key] = {
         value: value
@@ -69533,8 +69533,8 @@ var reducer = function reducer() {
       _total = _total + value;
     });
     return {
-      dc: _dice2,
-      tt: _total
+      dice: _dice2,
+      total: _total
     };
   }
 

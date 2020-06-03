@@ -65,14 +65,14 @@ class App extends Component {
     // }
 
     render() {
-        let dice = this.props.dc.map((die, key) =>
+        let dice = this.props.dice.map((die, key) =>
             <Die key={key} index={key} value={die.value} reroll={() => this.props.reroll(key)}></Die>
         );
         return (
             <div>
                 <button onClick={this.props.setupDice}>Setup Dice</button>
                 {dice}
-                <p>Total: {this.props.tt}</p>
+                <p>Total: {this.props.total}</p>
                 <button onClick={this.props.rerollAll}>Reroll All</button>
             </div>
         );
@@ -82,8 +82,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
     return {
-        dc: state.dc,
-        tt: state.tt
+        dice: state.dice,
+        total: state.total
     };
 }
 
